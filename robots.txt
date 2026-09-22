@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zhengtuo2008-rgb.github.io/zhuangxiu-jinshouzhi/sitemap.xml
