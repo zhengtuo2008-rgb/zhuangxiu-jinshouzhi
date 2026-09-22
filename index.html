@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>装修金手指｜装修阶段管理与验收避坑工具</title>
+
+  <meta
+    name="description"
+    content="装修金手指是一款面向第一次装修、自装和半包业主的微信小程序，按照装修阶段整理当前要做什么、检查什么以及下一步需要准备什么。"
+  />
+
+  <meta
+    name="keywords"
+    content="装修金手指,装修小程序,第一次装修,自装,半包,装修流程,装修阶段,装修验收,水电验收,防水验收,瓷砖验收"
+  />
+
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#0f6b45" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="装修金手指｜装修阶段管理与验收避坑工具" />
+  <meta
+    property="og:description"
+    content="按装修阶段查看当前该做什么、检查什么、下一步要准备什么。"
+  />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "装修金手指",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "WeChat",
+        "description": "装修金手指是一款面向第一次装修、自装和半包业主的微信小程序，按照装修阶段整理当前要做什么、检查什么以及下一步需要准备什么。",
+        "audience": {
+          "@type": "Audience",
+          "audienceType": "第一次装修、自装、半包业主"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "装修金手指是什么？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "装修金手指是一款面向普通装修业主的微信小程序，按照装修阶段整理当前要做什么、检查什么以及下一步需要准备什么。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "装修金手指适合谁？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "主要适合第一次装修、自装、半包以及对装修流程不熟悉的普通业主。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "装修金手指能替代装修公司或监理吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "不能。装修金手指不承接施工，也不替代设计、专业监理、专业检测以及依法需要的审批和验收。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "装修金手指主要解决什么问题？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "主要帮助普通业主弄清楚自己现在处于什么装修阶段、当前要做什么、应该检查什么，以及下一步要提前准备什么。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "PingFang SC",
+        "Hiragino Sans GB",
+        "Microsoft YaHei",
+        sans-serif;
+      color: #17211c;
+      background: #f7f9f7;
+      line-height: 1.75;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e5ebe7;
+    }
+
+    .nav {
+      min-height: 66px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      color: #0d6240;
+      font-size: 20px;
+    }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #0d6240;
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #546259;
+      margin-left: 20px;
+      font-size: 14px;
+    }
+
+    .hero {
+      padding: 88px 0 72px;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(56,156,100,.16), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #f4f8f5 100%);
+    }
+
+    .badge {
+      display: inline-block;
+      background: #e6f4eb;
+      color: #126542;
+      padding: 7px 13px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: clamp(42px, 7vw, 76px);
+      line-height: 1.08;
+      margin: 20px 0;
+      letter-spacing: -2px;
+    }
+
+    .hero strong {
+      color: #0f6b45;
+    }
+
+    .lead {
+      max-width: 760px;
+      color: #536159;
+      font-size: 19px;
+      margin-bottom: 28px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 13px 20px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: #0f6b45;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: white;
+      border: 1px solid #d9e3dc;
+      color: #26362d;
+    }
+
+    .mini-tip {
+      margin-top: 16px;
+      color: #6f7b74;
+      font-size: 14px;
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    section:nth-of-type(even) {
+      background: white;
+    }
+
+    h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      margin: 0 0 12px;
+    }
+
+    .section-lead {
+      color: #6a766f;
+      max-width: 760px;
+      margin-bottom: 32px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e2e9e4;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 8px 28px rgba(15, 70, 42, .05);
+    }
+
+    section:nth-of-type(even) .card {
+      background: #f8faf8;
+    }
+
+    .card .num {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: #e4f4e9;
+      color: #0f6b45;
+      font-weight: 900;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #667269;
+    }
+
+    .scenes {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .scene {
+      background: #f6f9f6;
+      border-radius: 16px;
+      padding: 22px;
+      border-left: 4px solid #3b9463;
+    }
+
+    .scene strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+
+    .notice {
+      border-radius: 20px;
+      padding: 28px;
+      background: #10291e;
+      color: white;
+    }
+
+    .notice h3 {
+      margin-top: 0;
+      font-size: 24px;
+    }
+
+    .notice p {
+      color: #d5e4da;
+      margin-bottom: 0;
+    }
+
+    .faq {
+      border-top: 1px solid #e4e9e5;
+    }
+
+    details {
+      padding: 20px 0;
+      border-bottom: 1px solid #e4e9e5;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 750;
+      font-size: 18px;
+    }
+
+    details p {
+      color: #657169;
+      margin-bottom: 0;
+    }
+
+    .links {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .links a {
+      padding: 15px 18px;
+      border: 1px solid #e0e7e2;
+      border-radius: 12px;
+      background: white;
+      text-decoration: none;
+      transition: .2s ease;
+    }
+
+    .links a:hover {
+      transform: translateY(-1px);
+      border-color: #6ca985;
+    }
+
+    footer {
+      padding: 38px 0 52px;
+      color: #78837c;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media (max-width: 800px) {
+      nav {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 64px;
+      }
+
+      .grid,
+      .scenes {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        letter-spacing: -1px;
+      }
+
+      .lead {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <div class="logo">装</div>
+      装修金手指
+    </div>
+
+    <nav>
+      <a href="#about">是什么</a>
+      <a href="#problems">解决什么</a>
+      <a href="#scenes">使用场景</a>
+      <a href="#faq">常见问题</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="container">
+      <span class="badge">第一次装修 · 自装 · 半包</span>
+
+      <h1>
+        装修做到哪一步，<br />
+        就先把<strong>这一步</strong>弄明白
+      </h1>
+
+      <p class="lead">
+        装修金手指是一款面向普通装修业主的微信小程序，
+        按照装修阶段整理当前要做什么、检查什么，以及下一步需要准备什么。
+      </p>
+
+      <div class="actions">
+        <button class="btn btn-primary" onclick="copyMiniProgram()">
+          复制小程序名称
+        </button>
+
+        <a class="btn btn-secondary" href="#about">
+          了解装修金手指
+        </a>
+      </div>
+
+      <div class="mini-tip">
+        微信搜索：装修金手指
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <h2>装修金手指是什么？</h2>
+
+      <p class="section-lead">
+        它不是把所有装修知识塞给你，而是按照真实装修进度，
+        让你在当前阶段先找到真正需要关注的事情。
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="num">01</div>
+          <h3>现在该做什么</h3>
+          <p>
+            按当前装修阶段查看需要推进的事项，
+            不用一次研究完整个装修流程。
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="num">02</div>
+          <h3>现在该检查什么</h3>
+          <p>
+            水电、防水、泥瓦等关键阶段，
+            都有对应的检查思路和容易遗漏的问题。
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="num">03</div>
+          <h3>下一步准备什么</h3>
+          <p>
+            提前了解后续施工需要准备的事项，
+            减少临时决定和工序衔接混乱。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="problems">
+    <div class="container">
+      <h2>为什么会做这个工具？</h2>
+
+      <p class="section-lead">
+        很多第一次装修的人并不缺资料，真正缺的是顺序。
+        收藏几十篇攻略以后，施工现场还是可能不知道现在应该先处理什么。
+      </p>
+
+      <div class="notice">
+        <h3>装修金手指解决的是“阶段性迷茫”</h3>
+        <p>
+          现在进行到哪里，当前有哪些事项，需要检查哪些问题，
+          下一阶段还要提前准备什么。
+          先把当前这一步做明白，再继续往后推进。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="scenes">
+    <div class="container">
+      <h2>典型使用场景</h2>
+
+      <p class="section-lead">
+        当你在装修现场开始冒出这些问题时，
+        就是阶段指引最有价值的时候。
+      </p>
+
+      <div class="scenes">
+
+        <div class="scene">
+          <strong>水电刚做完</strong>
+          不知道封槽之前还要核对哪些点位、材料和测试结果。
+        </div>
+
+        <div class="scene">
+          <strong>防水刚做完</strong>
+          不知道闭水试验应该看哪里，发现问题以后怎么记录。
+        </div>
+
+        <div class="scene">
+          <strong>瓷砖刚铺完</strong>
+          不知道除了空鼓，还应该看砖缝、破损、收口和排水。
+        </div>
+
+        <div class="scene">
+          <strong>不知道下一步干什么</strong>
+          当前工序快结束，却不知道下一个阶段应该提前准备什么。
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>装修金手指不是什么</h2>
+
+      <p class="section-lead">
+        把能力边界说清楚，比把一个工具包装成万能神器更重要。
+      </p>
+
+      <div class="grid">
+
+        <div class="card">
+          <div class="num">×</div>
+          <h3>不是装修公司</h3>
+          <p>
+            不承接装修施工，也不替业主安排施工人员。
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="num">×</div>
+          <h3>不是设计软件</h3>
+          <p>
+            不负责生成户型设计、效果图或专业施工图。
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="num">×</div>
+          <h3>不能替代专业验收</h3>
+          <p>
+            不替代设计、监理、检测以及依法需要的审批和专业验收。
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="container">
+      <h2>常见问题</h2>
+
+      <div class="faq">
+
+        <details>
+          <summary>装修金手指适合什么人？</summary>
+          <p>
+            主要面向第一次装修、自装、半包，以及对装修流程不熟悉的普通业主。
+          </p>
+        </details>
+
+        <details>
+          <summary>装修金手指主要解决什么问题？</summary>
+          <p>
+            帮助业主弄清楚自己当前处于哪个装修阶段，
+            当前应该做什么、检查什么，以及下一步要提前准备什么。
+          </p>
+        </details>
+
+        <details>
+          <summary>可以替代装修监理吗？</summary>
+          <p>
+            不可以。它提供的是装修阶段事项和检查参考，
+            不替代专业监理、检测和现场验收。
+          </p>
+        </details>
+
+        <details>
+          <summary>怎么找到装修金手指？</summary>
+          <p>
+            在微信中搜索“装修金手指”小程序即可。
+          </p>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>公开内容</h2>
+
+      <p class="section-lead">
+        以下内容由装修金手指项目方公开发布，
+        持续整理第一次装修常见的阶段问题。
+      </p>
+
+      <div class="links">
+
+        <a
+          href="https://baijiahao.baidu.com/s?id=1877038650497612748"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          装修金手指是什么？第一次装修可以用它做什么
+        </a>
+
+        <a
+          href="https://baijiahao.baidu.com/s?id=1877037279086524848"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          第一次装修不知道从哪开始？先把这5件事理清楚
+        </a>
+
+        <a
+          href="https://baijiahao.baidu.com/s?id=1877037529994172930"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          水电改造结束别急着封槽，这9项先检查
+        </a>
+
+        <a
+          href="https://mp.weixin.qq.com/s/dWQgUpO-M2YJWYM3wUDllg"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          装修准备开工，业主先确认哪些事
+        </a>
+
+        <a
+          href="https://mp.weixin.qq.com/s/G6kA2xt96FKgXgwTWwIMig"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          装修金手指是什么，第一次装修怎么用
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    装修金手指 · 第一次装修，也能把每一步弄明白
+    <br />
+    更新日期：2026年9月22日
+  </div>
+</footer>
+
+<script>
+  function copyMiniProgram() {
+    navigator.clipboard.writeText("装修金手指")
+      .then(function () {
+        alert("已复制：装修金手指\n打开微信搜索即可。");
+      })
+      .catch(function () {
+        alert("请在微信中搜索：装修金手指");
+      });
+  }
+</script>
+
+</body>
+</html>
